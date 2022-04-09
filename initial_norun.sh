@@ -95,4 +95,4 @@ nvim /etc/mkinitcpio.conf
 # Then recrete the modules in linux kernel
 mkinitcpio -p linux
 
-git clone https://gitlab.com/fanmih/archinstall
+git clone https://github.com/fanmih/archinstall
