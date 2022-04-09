@@ -36,18 +36,15 @@ ssh
 
 # Set up local Arch mirrors
 pacman -Syyy
-
 pacman -Ql reflector
-
-pacman -S python3
-pacman -S reflector
+pacman -S python3 reflector
 reflector --verbose --country SE --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
-
 pacman -Syyy
 
-pacman -S reflector
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-reflector -c "NO" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+# another approach
+# pacman -S reflector
+# cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+# reflector -c "NO" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 
 # Sync with ntp servers
 timedatectl set-ntp true
