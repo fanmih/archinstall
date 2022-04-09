@@ -1,5 +1,9 @@
 #!/bin/bash
 
+### Initual part of the Arch linux installation 
+# Ideas from EF - Linux https://www.youtube.com/channel/UCX_WM2O-X96URC5n66G-hvw
+
+# Optional keymap configuration
 ls /usr/share/kbd/keymaps/i386/qwerty
 loadkeys 
 
@@ -11,6 +15,7 @@ localectl list-locales
 ls /usr/share/kbd/consolefonts
 setfont ter-c20n
 
+# This is also enabled by default now
 systemctl enable sshd.service --now
 
 passwd
