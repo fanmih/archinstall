@@ -1,15 +1,23 @@
 #!/bin/bash
 
+### Final part of the Arch linux installation 
+# Ideas from EF - Linux https://www.youtube.com/channel/UCX_WM2O-X96URC5n66G-hvw
+# this is meant to run as a script after the partitions are ready and mounted
+
 # Set timezone
 timedatectl set-timezone Europe/Oslo
 ln -sf /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 hwclock --systohc
+
+# Set language and locales
 # Line below removes the pound sign from timezone
 sed -i '178s/.//' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
 # line below sets the KEYMAP so we do not need it
 # echo "KEYMAP=de_CH-latin1" >> /etc/vconsole.conf
+
+# Set host and hostname
 echo "archapril2022" >> /etc/hostname
 echo "127.0.0.1 localhost" >> /etc/hosts
 echo "::1       localhost" >> /etc/hosts
@@ -23,6 +31,7 @@ echo root:123123 | chpasswd
 # We also remove the following packages as they are for xwindows and we are building headless
 # xdg-user-dirs xdg-utils cups hplip alsa-utils pipewire pipewire-alsa pipewire-pulse pipewire-jack bluez bluez-utils
 
+# install all packages
 pacman -S efibootmgr networkmanager network-manager-applet dialog wpa_supplicant mtools dosfstools base-devel linux-headers avahi gvfs gvfs-smb nfs-utils inetutils dnsutils bash-completion openssh rsync reflector acpi acpi_call virt-manager qemu qemu-arch-extra edk2-ovmf bridge-utils dnsmasq vde2 openbsd-netcat iptables-nft ipset firewalld flatpak sof-firmware nss-mdns acpid os-prober ntfs-3g terminus-font
 
 # pacman -S --noconfirm xf86-video-amdgpu
@@ -50,7 +59,7 @@ usermod -aG libvirt zz
 
 echo "zz ALL=(ALL) ALL" >> /etc/sudoers.d/zz
 
-
+# actually not done yet! we need to create the bootloader lines
 printf "\e[1;32mDone! Type exit, umount -a and reboot.\e[0m"
 
 
