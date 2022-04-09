@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Set timezone
 timedatectl set-timezone Europe/Oslo
 ln -sf /usr/share/zoneinfo/Europe/Oslo /etc/localtime
 hwclock --systohc
