@@ -49,5 +49,49 @@ pacman -Syyy
 # Sync with ntp servers
 timedatectl set-ntp true
 
+# partitioning
 lsblk
 
+cfdisk /dev/sda
+
+mkfs.vfat -F32 -n EFI /dev/sda1
+
+
+# Encryption options
+cryptsetup --cipher aes-xts-plain64 --hash sha512 --use-random --verify-passphrase luksFormat /dev/sda2
+
+cryptsetup luksOpen /dev/sda2 root
+
+mkfs.btrfs /dev/mapper/root
+
+mount /dev/mapper/root /mnt
+
+cd /mnt
+
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@var
+umount /mnt
+mount -o noatime,compress=zstd,ssd,discard=async,space_cache=v2,subvol=@ /dev/mapper/root /mnt
+mkdir -p /mnt/{boot,home,var}
+mount -o noatime,compress=zstd,ssd,discard=async,space_cache=v2,subvol=@home /dev/mapper/root /mnt/home
+mount -o noatime,compress=zstd,ssd,discard=async,space_cache=v2,subvol=@var /dev/mapper/root /mnt/var
+mount /dev/sda1 /mnt/boot
+lsblk
+
+pacstrap /mnt base linux linux-firmware git vim neovim amd-ucode btrfs-progs openssh base-devel dialog os-prober mtools dosfstools
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt
+
+# Load modules for the encrypted FS
+nvim /etc/mkinitcpio.conf
+# Line
+# MODULES=(btrfs)
+# HOOKS=(base udev autodetect modconf block encrypt filesystems keyboard fsck)
+
+# Then recrete the modules in linux kernel
+mkinitcpio -p linux
+
+git clone https://gitlab.com/fanmih/archinstall
