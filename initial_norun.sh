@@ -5,7 +5,7 @@
 
 # Optional keymap configuration
 ls /usr/share/kbd/keymaps/i386/qwerty
-loadkeys 
+loadkeys
 
 dumpkeys
 
@@ -37,7 +37,7 @@ ssh
 # Set up local Arch mirrors
 pacman -Syyy
 pacman -Ql reflector
-pacman -S python3 reflector
+pacman -S python3 reflector git
 reflector --verbose --country SE --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 pacman -Syyy
 
@@ -71,6 +71,7 @@ cd /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
 btrfs subvolume create /mnt/@var
+cd /
 umount /mnt
 mount -o noatime,compress=zstd,ssd,discard=async,space_cache=v2,subvol=@ /dev/mapper/root /mnt
 mkdir -p /mnt/{boot,home,var}
